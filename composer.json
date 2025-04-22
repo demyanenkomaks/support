@@ -1,0 +1,33 @@
+{
+    "name": "maksde/support",
+    "version": "1.0.0",
+    "description": "Helpers for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ],
+        "psr-4": {
+            "Maksde\\Support\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Demyanenko Maksim",
+            "email": "demyanenkomaks0@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0|^12.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maksde\\Support\\SupportServiceProvider"
+            ]
+        }
+    }
+}
