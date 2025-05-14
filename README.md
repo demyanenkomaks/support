@@ -1,31 +1,28 @@
-# Helpers for Laravel
+# Помощник для Laravel
 
-* Правила валидации для форм
-* Форматировщик даты и времени для отдачи по api в UTC
+* [Правила валидации для форм](README.md#правила-валидации-для-форм)
+* [Форматирование даты и времени для передачи по api в UTC](README.md#форматирование-даты-и-времени-для-передачи-по-api-в-utc)
 * Вспомогательные функции
-  * urlFront($path)
+  * urlFront($path) - формирование полного пути файла со storage
 
-## Installation
+## Установка
 
-Install the package with Composer:
-
+Установить пакет с помощью Composer:
 ```bash
 composer require maksde/support
 ```
 
-Publish the configuration file:
-
+Опубликуйте файл конфигурации:
 ```bash
 php artisan vendor:publish --tag="support-config"
 ```
 
-Publish the translation files:
-
+Опубликовать файлы перевода:
 ```bash
 php artisan vendor:publish --tag="support-lang"
 ```
 
-## Примеры использования валидаторов
+## Правила валидации для форм
 
 | Валидация                       | Пример использования                                                             |
 |---------------------------------|----------------------------------------------------------------------------------|
@@ -37,7 +34,7 @@ php artisan vendor:publish --tag="support-lang"
 | Даты и времени                  | `'datetime' => 'required\|'.config('support.validate.format.datetime'),`         |
 
 
-## Форматирование дат и времени для передачи по api
+## Форматирование даты и времени для передачи по api в UTC
 
 ```php
 use Maksde\Support\Formation\TemporalFormat;
