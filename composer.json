@@ -1,7 +1,7 @@
 {
     "name": "maksde/support",
-    "version": "1.0.2",
-    "description": "Helpers for Laravel",
+    "version": "1.0.3",
+    "description": "Помощник для Laravel",
     "type": "library",
     "license": "MIT",
     "autoload": {

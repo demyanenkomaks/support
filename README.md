@@ -1,5 +1,11 @@
 # Помощник для Laravel
 
+![Static Badge](https://img.shields.io/badge/maksde-support-green)
+![Packagist Version](https://img.shields.io/packagist/v/maksde/support)
+![Packagist Downloads](https://img.shields.io/packagist/dt/maksde/support)
+![Packagist License](https://img.shields.io/packagist/l/maksde/support)
+
+
 * [Правила валидации для форм](README.md#правила-валидации-для-форм)
 * [Форматирование даты и времени для передачи по api в UTC](README.md#форматирование-даты-и-времени-для-передачи-по-api-в-utc)
 * Вспомогательные функции
