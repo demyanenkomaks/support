@@ -1,8 +1,9 @@
 # Помощник для Laravel
 
-![Static Badge](https://img.shields.io/badge/maksde-support-green)
 ![Packagist Version](https://img.shields.io/packagist/v/maksde/support)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/maksde/support)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/php)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/laravel%2Fframework)
 ![Packagist License](https://img.shields.io/packagist/l/maksde/support)
 
 
