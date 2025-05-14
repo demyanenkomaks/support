@@ -11,7 +11,7 @@ class SupportServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/support.php', 'support');
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'support');
 

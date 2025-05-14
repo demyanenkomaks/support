@@ -8,10 +8,19 @@ use Maksde\Support\DomainZone;
 
 class EmailValidate implements ValidationRule
 {
+    /**
+     * Максимальная длина E-mail
+     */
     const MAX_EMAIL_LENGTH = 255;
 
+    /**
+     * Максимальная длина подписи E-mail
+     */
     const MAX_NAME_LENGTH = 64;
 
+    /**
+     * Максимальная длина домена E-mail
+     */
     const MAX_DOMAIN_LENGTH = 253;
 
     /**
@@ -56,13 +65,22 @@ class EmailValidate implements ValidationRule
         }
     }
 
-    private function validateCharacters(string $value): bool
+    /**
+     * @param  string  $email  E-mail
+     * @return bool Прошла ли проверка
+     */
+    private function validateCharacters(string $email): bool
     {
         $pattern = '/[!#$%^&*\\\|\/\(\)\{\}<>[\],:;\'"`]/';
 
-        return ! preg_match($pattern, $value);
+        return ! preg_match($pattern, $email);
     }
 
+    /**
+     * @param  string  $name  Подпись E-mail
+     * @param  string  $domain  Домен E-mail
+     * @return bool Прошла ли проверка
+     */
     private function validateNameAndDomain(string $name, string $domain): bool
     {
         // Регулярное выражение для имени (разрешает буквы, цифры, '.', '_', '-', и '+')
@@ -72,9 +90,14 @@ class EmailValidate implements ValidationRule
         $domainPattern = '/^[\p{L}0-9]+(?:[._-][\p{L}0-9]+)*$/u';
 
         return preg_match($namePattern, $name) === 1 && preg_match($domainPattern, $domain) === 1;
-
     }
 
+    /**
+     * @param  string  $email  E-mail
+     * @param  string  $name  Подпись E-mail
+     * @param  string  $domain  Домен E-mail
+     * @return bool Прошла ли проверка
+     */
     private function validateLengths(string $email, string $name, string $domain): bool
     {
         $emailCount = mb_strlen($email);
