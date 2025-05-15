@@ -1,10 +1,10 @@
 # Помощник для Laravel
 
-![Packagist Version](https://img.shields.io/packagist/v/maksde/support)
-![Packagist Downloads](https://img.shields.io/packagist/dt/maksde/support)
-![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/php)
-![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/laravel%2Fframework)
-![Packagist License](https://img.shields.io/packagist/l/maksde/support)
+[![Packagist Version](https://img.shields.io/packagist/v/maksde/support)](https://packagist.org/packages/maksde/support)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/maksde/support)](https://packagist.org/packages/maksde/support)
+[![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/php)](https://packagist.org/packages/maksde/support)
+[![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/maksde/support/laravel%2Fframework)](https://packagist.org/packages/maksde/support)
+[![Packagist License](https://img.shields.io/packagist/l/maksde/support)](https://packagist.org/packages/maksde/support)
 
 
 * [Правила валидации для форм](#правила-валидации-для-форм)
