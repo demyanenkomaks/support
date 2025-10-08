@@ -19,14 +19,14 @@
 composer require maksde/support
 ```
 
-Опубликуйте файл конфигурации:
+Опубликовать файлы конфигурации:
 ```bash
 php artisan vendor:publish --tag="support-config"
 ```
 
 Опубликовать файлы перевода:
 ```bash
-php artisan vendor:publish --tag="support-lang"
+php artisan vendor:publish --tag="support-translations"
 ```
 
 ## Правила валидации для форм

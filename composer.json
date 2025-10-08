@@ -1,6 +1,6 @@
 {
     "name": "maksde/support",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Помощник для Laravel",
     "type": "library",
     "license": "MIT",
@@ -22,6 +22,22 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "driftingly/rector-laravel": "^2.0",
+        "laravel/pint": "^1.13",
+        "larastan/larastan": "^3.3"
+    },
+    "scripts": {
+        "pint": "./vendor/bin/pint",
+        "phpstan": "./vendor/bin/phpstan analyse --memory-limit=-1",
+        "rector": "./vendor/bin/rector process --clear-cache",
+        "rector:dry": "./vendor/bin/rector process --clear-cache --dry-run",
+        "fix": [
+            "@rector",
+            "@pint",
+            "@phpstan"
+        ]
     },
     "extra": {
         "laravel": {

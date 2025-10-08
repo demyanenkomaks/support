@@ -18,7 +18,7 @@ class SupportServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../resources/lang' => lang_path('vendor/support'),
-            ], 'support-lang');
+            ], 'support-translations');
 
             $this->publishes([
                 __DIR__.'/../config/support.php' => config_path('support.php'),
