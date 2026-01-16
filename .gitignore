@@ -2,6 +2,11 @@
 /vendor
 src/vendor
 composer.phar
+composer.lock
 
 # IDE
 .idea
+
+# Tests
+/coverage
+.phpunit.result.cache

@@ -3,6 +3,7 @@
 namespace Maksde\Support\Formation;
 
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 class TemporalFormat
 {
@@ -53,7 +54,7 @@ class TemporalFormat
         $format = config('support.return.format.'.$type);
 
         if (empty($format)) {
-            throw new \InvalidArgumentException(sprintf("Format for type '%s' not found in configuration.", $type));
+            throw new InvalidArgumentException(sprintf("Format for type '%s' not found in configuration.", $type));
         }
 
         return self::format($temporal, $format, $timezone);
