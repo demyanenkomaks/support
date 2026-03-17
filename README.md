@@ -21,7 +21,7 @@
   * [ImageValidate](#imagevalidate) - валидация изображений
   * [VideoValidate](#videovalidate) - валидация видео
   * [DocumentValidate](#documentvalidate) - валидация документов
-* [Форматирование даты и времени для передачи по API в UTC](#форматирование-даты-и-времени-для-передачи-по-api-в-utc)
+* [Форматирование даты и времени (TemporalFormat)](#форматирование-даты-и-времени-temporalformat)
 * [Вспомогательные функции](#вспомогательные-функции)
 * [Тестирование](#тестирование)
 
@@ -514,37 +514,45 @@ use Maksde\Support\Contracts\Validation\DocumentValidate;
 
 ---
 
-## Форматирование даты и времени для передачи по API в UTC
+## Форматирование даты и времени (TemporalFormat)
 
-Класс `TemporalFormat` предоставляет удобные методы для форматирования даты и времени в UTC для передачи по API.
+Класс `Maksde\Support\Formation\TemporalFormat` переводит дату/время между timezone и форматами при сохранении в БД и при выводе (в т.ч. в API). Форматы задаются в конфиге: `support.storage.format.*`, `support.view.format.*`, `support.api.format.*`.
 
-**Примеры использования:**
+### Сохранение (forStorage)
+
+Подготовка значения к записи в БД. Для **date** применяется только форматирование (календарная дата без timezone). Для **time** и **datetime** значение из указанной timezone переводится в UTC.
+
 ```php
 use Maksde\Support\Formation\TemporalFormat;
 
-// Форматирование даты и времени
-TemporalFormat::datetime($datetime); // 2025-04-16T23:59:59Z
+// Дата — только формат, timezone не используется
+TemporalFormat::forStorage('2025-12-31', 'date', 'Europe/Moscow'); // '2025-12-31'
 
-// Форматирование только даты
-TemporalFormat::date($date); // 2025-04-16
-
-// Форматирование только времени
-TemporalFormat::time($time); // 23:59:59
+// Время и datetime — из timezone приложения в UTC
+TemporalFormat::forStorage('10:00:00', 'time', config('app.timezone'));
+TemporalFormat::forStorage('2025-12-31 10:00:00', 'datetime', config('app.timezone'));
 ```
 
-### Создание своего типа форматирования
+**Сигнатура:** `forStorage(?string $value, 'date'|'time'|'datetime' $type, string $fromTimezone = 'UTC'): ?string`
 
-В опубликованном конфиге можно добавить свой тип форматирования:
+### Вывод (forOutput)
+
+Подготовка значения из БД к показу или к отдаче в API. Для **date** — только форматирование. Для **time** и **datetime** — перевод из UTC в целевую timezone и формат.
 
 ```php
-TemporalFormat::type($datetime, 'myType');
+use Maksde\Support\Formation\TemporalFormat;
+
+// Дата — только формат
+TemporalFormat::forOutput('2025-12-31', 'date', 'UTC', config('support.api.format.date'));
+
+// Время и datetime — из UTC в нужную timezone и формат
+TemporalFormat::forOutput($timeFromDb, 'time', 'UTC', 'H:i:s');
+TemporalFormat::forOutput($datetimeFromDb, 'datetime', 'UTC', config('support.api.format.datetime'));
 ```
 
-### Передача формата напрямую в функцию
+**Сигнатура:** `forOutput(?string $value, 'date'|'time'|'datetime' $type, string $toTimezone = 'UTC', ?string $format = null): ?string`
 
-```php
-TemporalFormat::format($datetime, 'j M Y H:i:s');
-```
+Для типа **time** значение в БД хранится как время с якорной датой; при разборе используется та же логика, что и в `forStorage`.
 
 ---
 
