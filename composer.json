@@ -1,6 +1,6 @@
 {
     "name": "maksde/support",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Помощник для Laravel",
     "type": "library",
     "license": "MIT",

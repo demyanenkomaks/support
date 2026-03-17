@@ -5,75 +5,64 @@ namespace Maksde\Support\Formation;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
+/**
+ * Конвертация и форматирование даты, времени и datetime при сохранении и выводе.
+ */
 class TemporalFormat
 {
     /**
-     * @param  string|null  $datetime  Значение даты и времени
-     * @param  string  $timezone  Временная метка
-     * @return string|null Отформатированная дата и время
-     */
-    public static function datetime(?string $datetime, string $timezone = 'UTC'): ?string
-    {
-        return self::type($datetime, 'datetime', $timezone);
-    }
-
-    /**
-     * @param  string|null  $date  Значение даты
-     * @param  string  $timezone  Временная метка
-     * @return string|null Отформатированная дата
-     */
-    public static function date(?string $date, string $timezone = 'UTC'): ?string
-    {
-        return self::type($date, 'date', $timezone);
-    }
-
-    /**
-     * @param  string|null  $time  Значение времени
-     * @param  string  $timezone  Временная метка
-     * @return string|null Отформатированное время
-     */
-    public static function time(?string $time, string $timezone = 'UTC'): ?string
-    {
-        return self::type($time, 'time', $timezone);
-    }
-
-    /**
-     * Форматирует временную метку.
+     * Подготовка к сохранению: значение форматируется для БД.
+     * Для date — только формат (timezone не применяется). Для time и datetime — из $fromTimezone в UTC.
      *
-     * @param  string|null  $temporal  Временная метка
-     * @param  string  $type  Тип временной метки
-     * @param  string  $timezone  Временная зона (по умолчанию 'UTC')
-     * @return string|null Отформатированное значение или null, если входные данные пустые
+     * @param  string|null  $value  Строка даты/времени в формате, распознаваемом Carbon
+     * @param  'date'|'time'|'datetime'  $type  Тип значения (для time используется якорная дата)
+     * @param  string  $fromTimezone  Исходная timezone для time/datetime (по умолчанию UTC); для date не используется
+     * @return string|null Отформатированная строка для хранения или null при пустом $value
      */
-    public static function type(?string $temporal, string $type, string $timezone = 'UTC'): ?string
+    public static function forStorage(?string $value, string $type, string $fromTimezone = 'UTC'): ?string
     {
-        if (empty($temporal)) {
+        if (empty($value)) {
             return null;
         }
 
-        $format = config('support.return.format.'.$type);
-
+        $format = config('support.storage.format.'.$type);
         if (empty($format)) {
-            throw new InvalidArgumentException(sprintf("Format for type '%s' not found in configuration.", $type));
+            throw new InvalidArgumentException(sprintf("Storage format for type '%s' not found in configuration.", $type));
         }
 
-        return self::format($temporal, $format, $timezone);
+        return match ($type) {
+            'date' => Carbon::parse($value)->format($format),
+            'time' => Carbon::parse('2000-01-01 '.$value, $fromTimezone)->utc()->format($format),
+            'datetime' => Carbon::parse($value, $fromTimezone)->utc()->format($format),
+            default => throw new InvalidArgumentException(sprintf("Unknown type '%s'.", $type)),
+        };
     }
 
     /**
-     * Форматирует временную метку с пользовательским форматом.
+     * Подготовка к выводу: значение из UTC переводится в целевую timezone и форматируется.
      *
-     * @param  string|null  $temporal  Временная метка
-     * @param  string  $format  Пользовательский формат
-     * @param  string  $timezone  Временная зона (по умолчанию 'UTC')
-     * @return string|null Отформатированное значение или null, если входные данные пустые
+     * @param  string|null  $value  Строка в UTC (для time — только время с якорной датой при разборе)
+     * @param  'date'|'time'|'datetime'  $type  Тип значения
+     * @param  string  $toTimezone  Целевая timezone (по умолчанию UTC)
+     * @param  string|null  $format  Формат вывода; при null берётся из config('support.view.format.'.$type)
+     * @return string|null Отформатированная строка или null при пустом $value
      */
-    public static function format(?string $temporal, string $format, string $timezone = 'UTC'): ?string
+    public static function forOutput(?string $value, string $type, string $toTimezone = 'UTC', ?string $format = null): ?string
     {
-        if (empty($temporal)) {
+        if (empty($value)) {
             return null;
         }
 
-        return Carbon::parse($temporal)->setTimezone($timezone)->format($format);
+        $format = $format ?? config('support.view.format.'.$type);
+        if (empty($format)) {
+            throw new InvalidArgumentException(sprintf("Output format for type '%s' not found in configuration.", $type));
+        }
+
+        return match ($type) {
+            'date' => Carbon::parse($value)->format($format),
+            'time' => Carbon::parse('2000-01-01 '.$value, 'UTC')->timezone($toTimezone)->format($format),
+            'datetime' => Carbon::parse($value, 'UTC')->timezone($toTimezone)->format($format),
+            default => throw new InvalidArgumentException(sprintf("Unknown type '%s'.", $type)),
+        };
     }
 }
