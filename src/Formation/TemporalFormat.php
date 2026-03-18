@@ -15,7 +15,7 @@ class TemporalFormat
      * Для date — только формат (timezone не применяется). Для time и datetime — из $fromTimezone в UTC.
      *
      * @param  string|null  $value  Строка даты/времени в формате, распознаваемом Carbon
-     * @param  'date'|'time'|'datetime'  $type  Тип значения (для time используется якорная дата)
+     * @param  string  $type  Тип значения: 'date', 'time' или 'datetime' (для time используется якорная дата)
      * @param  string  $fromTimezone  Исходная timezone для time/datetime (по умолчанию UTC); для date не используется
      * @return string|null Отформатированная строка для хранения или null при пустом $value
      */
@@ -42,7 +42,7 @@ class TemporalFormat
      * Подготовка к выводу: значение из UTC переводится в целевую timezone и форматируется.
      *
      * @param  string|null  $value  Строка в UTC (для time — только время с якорной датой при разборе)
-     * @param  'date'|'time'|'datetime'  $type  Тип значения
+     * @param  string  $type  Тип значения: 'date', 'time' или 'datetime'
      * @param  string  $toTimezone  Целевая timezone (по умолчанию UTC)
      * @param  string|null  $format  Формат вывода; при null берётся из config('support.view.format.'.$type)
      * @return string|null Отформатированная строка или null при пустом $value

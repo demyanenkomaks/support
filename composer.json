@@ -1,6 +1,6 @@
 {
     "name": "maksde/support",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Помощник для Laravel",
     "type": "library",
     "license": "MIT",
@@ -21,7 +21,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.0|^12.0"
+        "laravel/framework": "^12.0|^13.0"
     },
     "autoload-dev": {
         "psr-4": {
