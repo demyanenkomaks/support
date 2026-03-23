@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use DateTime;
+use Illuminate\Translation\PotentiallyTranslatedString;
 use Maksde\Support\Contracts\Validation\DateTimeValidate;
 use Maksde\Support\Tests\TestCase;
 
@@ -18,9 +21,9 @@ class DateTimeValidateTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider validDatetimesProvider
+     * @dataProvider validDateTimeStringsProvider
      */
-    public function test_valid_datetimes(string $datetime): void
+    public function test_valid_date_time_strings(string $datetime): void
     {
         $this->assertValid(new DateTimeValidate, $datetime);
     }
@@ -28,9 +31,9 @@ class DateTimeValidateTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider invalidDatetimesProvider
+     * @dataProvider invalidDateTimeStringsProvider
      */
-    public function test_invalid_datetimes(string $datetime, string $expectedErrorKey): void
+    public function test_invalid_date_time_strings(string $datetime, string $expectedErrorKey): void
     {
         $this->assertInvalid(new DateTimeValidate, $datetime, $expectedErrorKey);
     }
@@ -149,10 +152,15 @@ class DateTimeValidateTest extends TestCase
         $this->expectExceptionMessage('Invalid reference datetime format');
 
         $validator = new DateTimeValidate('future', 'invalid-datetime');
-        $validator->validate('test', '2025-06-15 14:30:00', fn () => null);
+        $validator->validate('test', '2025-06-15 14:30:00', function (string $attribute, ?string $message = null): PotentiallyTranslatedString {
+            return new PotentiallyTranslatedString($message ?? '', $this->app['translator']);
+        });
     }
 
-    public static function validDatetimesProvider(): array
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function validDateTimeStringsProvider(): array
     {
         return [
             'standard datetime' => ['2025-04-16 14:30:45'],
@@ -165,7 +173,10 @@ class DateTimeValidateTest extends TestCase
         ];
     }
 
-    public static function invalidDatetimesProvider(): array
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
+    public static function invalidDateTimeStringsProvider(): array
     {
         return [
             'wrong format with T' => ['2025-04-16T14:30:45', 'datetime.format'],

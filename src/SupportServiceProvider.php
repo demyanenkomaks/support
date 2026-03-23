@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support;
 
 use Illuminate\Support\ServiceProvider;

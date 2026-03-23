@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use DateTime;
+use Illuminate\Translation\PotentiallyTranslatedString;
 use Maksde\Support\Contracts\Validation\TimeValidate;
 use Maksde\Support\Tests\TestCase;
 
@@ -145,9 +148,14 @@ class TimeValidateTest extends TestCase
         $this->expectExceptionMessage('Invalid reference time format');
 
         $validator = new TimeValidate('future', 'invalid-time');
-        $validator->validate('test', '14:30:00', fn () => null);
+        $validator->validate('test', '14:30:00', function (string $attribute, ?string $message = null): PotentiallyTranslatedString {
+            return new PotentiallyTranslatedString($message ?? '', $this->app['translator']);
+        });
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function validTimesProvider(): array
     {
         return [
@@ -159,6 +167,9 @@ class TimeValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
     public static function invalidTimesProvider(): array
     {
         return [

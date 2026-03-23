@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use Illuminate\Http\UploadedFile;
@@ -100,6 +102,9 @@ class DocumentValidateTest extends TestCase
         $this->assertValid(new DocumentValidate, 123);
     }
 
+    /**
+     * @return array<string, array{0: string, 1: string, 2: int}>
+     */
     public static function validDocumentsProvider(): array
     {
         return [
@@ -110,6 +115,9 @@ class DocumentValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function invalidExtensionsProvider(): array
     {
         return [
@@ -121,6 +129,9 @@ class DocumentValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function invalidMimesProvider(): array
     {
         return [

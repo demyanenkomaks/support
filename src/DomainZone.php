@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support;
 
 class DomainZone
@@ -15,7 +17,7 @@ class DomainZone
         return in_array(strtolower($tld), self::$tlds, true);
     }
 
-    // Список доменных зон верхнего уровня (TLD)
+    /** @var list<string> Список доменных зон верхнего уровня (TLD) */
     private static array $tlds = [
         'aaa',
         'aarp',

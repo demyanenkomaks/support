@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use DateTime;
+use Illuminate\Translation\PotentiallyTranslatedString;
 use Maksde\Support\Contracts\Validation\DateValidate;
 use Maksde\Support\Tests\TestCase;
 
@@ -149,9 +152,14 @@ class DateValidateTest extends TestCase
         $this->expectExceptionMessage('Invalid reference date format');
 
         $validator = new DateValidate('future', 'invalid-date');
-        $validator->validate('test', '2025-06-15', fn () => null);
+        $validator->validate('test', '2025-06-15', function (string $attribute, ?string $message = null): PotentiallyTranslatedString {
+            return new PotentiallyTranslatedString($message ?? '', $this->app['translator']);
+        });
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function validDatesProvider(): array
     {
         return [
@@ -163,6 +171,9 @@ class DateValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
     public static function invalidDatesProvider(): array
     {
         return [

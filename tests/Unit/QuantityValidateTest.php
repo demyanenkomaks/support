@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use Maksde\Support\Contracts\Validation\QuantityValidate;
@@ -12,7 +14,7 @@ class QuantityValidateTest extends TestCase
      *
      * @dataProvider validQuantitiesProvider
      */
-    public function test_valid_quantities($quantity): void
+    public function test_valid_quantities(int|string $quantity): void
     {
         $this->assertValid(new QuantityValidate, $quantity);
     }
@@ -22,7 +24,7 @@ class QuantityValidateTest extends TestCase
      *
      * @dataProvider invalidQuantitiesProvider
      */
-    public function test_invalid_quantities($quantity, string $expectedErrorKey): void
+    public function test_invalid_quantities(int|string|float $quantity, string $expectedErrorKey): void
     {
         $this->assertInvalid(new QuantityValidate, $quantity, $expectedErrorKey);
     }
@@ -106,6 +108,9 @@ class QuantityValidateTest extends TestCase
         new QuantityValidate(min: 100, max: 10);
     }
 
+    /**
+     * @return array<string, array{0: int|string}>
+     */
     public static function validQuantitiesProvider(): array
     {
         return [
@@ -117,6 +122,9 @@ class QuantityValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: int|string|float, 1: string}>
+     */
     public static function invalidQuantitiesProvider(): array
     {
         return [

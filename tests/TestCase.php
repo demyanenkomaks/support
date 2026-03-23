@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
 use Maksde\Support\SupportServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -48,9 +51,9 @@ abstract class TestCase extends BaseTestCase
     {
         $failed = false;
 
-        $rule->validate('test_attribute', $value, function (string $attribute, string $message) use (&$failed, $value) {
+        $rule->validate('test_attribute', $value, function (string $attribute, ?string $message = null) use (&$failed, $value): PotentiallyTranslatedString {
             $failed = true;
-            $this->fail("Validation unexpectedly failed for value '".print_r($value, true)."' with message: {$message}");
+            $this->fail("Validation unexpectedly failed for value '".print_r($value, true)."' with message: ".($message ?? ''));
         });
 
         $this->assertFalse($failed, "Validation should pass for value '".print_r($value, true)."'");
@@ -64,9 +67,11 @@ abstract class TestCase extends BaseTestCase
         $failed = false;
         $errorMessage = '';
 
-        $rule->validate('test_attribute', $value, function (string $attribute, string $message) use (&$failed, &$errorMessage) {
+        $rule->validate('test_attribute', $value, function (string $attribute, ?string $message = null) use (&$failed, &$errorMessage): PotentiallyTranslatedString {
             $failed = true;
-            $errorMessage = $message;
+            $errorMessage = $message ?? '';
+
+            return new PotentiallyTranslatedString($errorMessage, $this->app['translator']);
         });
 
         $this->assertTrue($failed, "Validation should fail for value '".print_r($value, true)."'");

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Formation;
 
 use Carbon\Carbon;

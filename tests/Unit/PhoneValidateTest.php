@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
+use Illuminate\Translation\PotentiallyTranslatedString;
 use Maksde\Support\Contracts\Validation\PhoneValidate;
 use Maksde\Support\Tests\TestCase;
 
@@ -21,8 +24,10 @@ class PhoneValidateTest extends TestCase
     public function test_valid_phones(string $phone): void
     {
         $fails = false;
-        $this->validator->validate('phone', $phone, function () use (&$fails) {
+        $this->validator->validate('phone', $phone, function (string $attribute, ?string $message = null) use (&$fails): PotentiallyTranslatedString {
             $fails = true;
+
+            return new PotentiallyTranslatedString($message ?? '', $this->app['translator']);
         });
 
         $this->assertFalse($fails, "Phone '{$phone}' should be valid");
@@ -34,13 +39,18 @@ class PhoneValidateTest extends TestCase
     public function test_invalid_phones(string $phone): void
     {
         $fails = false;
-        $this->validator->validate('phone', $phone, function () use (&$fails) {
+        $this->validator->validate('phone', $phone, function (string $attribute, ?string $message = null) use (&$fails): PotentiallyTranslatedString {
             $fails = true;
+
+            return new PotentiallyTranslatedString($message ?? '', $this->app['translator']);
         });
 
         $this->assertTrue($fails, "Phone '{$phone}' should be invalid");
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function validPhoneProvider(): array
     {
         return [
@@ -49,6 +59,9 @@ class PhoneValidateTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
     public static function invalidPhoneProvider(): array
     {
         return [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maksde\Support\Tests\Unit;
 
 use Maksde\Support\Contracts\Validation\EmailValidate;
@@ -14,6 +16,8 @@ class EmailValidateTest extends TestCase
 {
     /**
      * Провайдер валидных email адресов
+     *
+     * @return array<string, array{0: string}>
      */
     public static function validEmailsProvider(): array
     {
@@ -99,6 +103,8 @@ class EmailValidateTest extends TestCase
 
     /**
      * Провайдер невалидных email адресов
+     *
+     * @return array<string, array{0: string}>
      */
     public static function invalidEmailsProvider(): array
     {
